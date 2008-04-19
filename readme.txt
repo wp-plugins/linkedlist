@@ -1,6 +1,6 @@
 === LinkedList ===
 Contributors: rungta
-Tags: blogroll, sidebar
+Tags: blogroll, sidebar, links
 Requires at least: 2.3
 Tested up to: 2.5
 Stable tag: trunk
