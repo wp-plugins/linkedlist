@@ -3,7 +3,7 @@
 Plugin Name: LinkedList
 Plugin URI: http://prateekrungta.com/linkedlist/wp-plugin
 Description: LinkedList.wp is a simple Wordpress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated.
-Version: 1.0.2
+Version: 1.0.3
 Author: Prateek Rungta
 Author URI: http://prateekrungta.com
 */
@@ -30,11 +30,13 @@ $linkedlist_options = array();
 $linkedlist_options['name'] = array(
 			'key' 		=> 'google_ajax_feed_api_key', 	// the WP option under which the user's API key is stored
 			'entries' 	=> 'linkedlist_entries', 		// for numberOfEntries
-			'fade' 		=> 'linkedlist_fade');			// for fadeEntries
+			'fade' 		=> 'linkedlist_fade',			// for fadeEntries
+			'cookies'	=> 'linkedlist_cookies');		// for useCookies
 $linkedlist_options['value'] = array(
 			'key' 		=> '',							// Paste your Google API key here to hardcode it.
 			'entries' 	=> '',
-			'fade' 		=> '');
+			'fade' 		=> '',
+			'cookies'	=> '');
 $links = array();										// to store all the blogroll links
 
 /*
@@ -112,18 +114,22 @@ function linkedlist_menu() {
 	$current['key'] = get_option($linkedlist_options['name']['key']);
 	$current['entries'] = get_option($linkedlist_options['name']['entries']);
 	$current['fade'] = get_option($linkedlist_options['name']['fade']);
+	$current['cookies'] = get_option($linkedlist_options['name']['cookies']);
 
 	$current['entries'] = ($current['entries'] != null) ? $current['entries'] : 0;
 	$current['fade'] = ($current['fade'] != null) ? $current['fade'] : 'yes';
+	$current['cookies'] = ($current['cookies'] != null) ? $current['cookies'] : 'no';
 
 	if (isset($_POST[$hiddenField]) && $_POST[$hiddenField] == '1') {
 		$current['key'] = $_POST[$linkedlist_options['name']['key']];
 		$current['entries'] = $_POST[$linkedlist_options['name']['entries']];
 		$current['fade'] = $_POST[$linkedlist_options['name']['fade']];
+		$current['cookies'] = $_POST[$linkedlist_options['name']['cookies']];
 		
-		update_option ($linkedlist_options['name']['key'], $current['key']); // creates an entry if it doesn't exist and updates its value
+		update_option ($linkedlist_options['name']['key'], $current['key']); // creates an entry if it doesn't exist and updates it
 		update_option ($linkedlist_options['name']['entries'], $current['entries']);
 		update_option ($linkedlist_options['name']['fade'], $current['fade']);
+		update_option ($linkedlist_options['name']['cookies'], $current['cookies']);
 ?>		
 	<div id="linkedlist_config_status" class="updated fade">
 		<p>LinkedList preferences updated!</p>
@@ -167,6 +173,16 @@ function linkedlist_menu() {
 	Yes</label><br />
 	<label for="<?php echo $linkedlist_options['name']['fade']; ?>">
 	<input type="radio" name="<?php echo $linkedlist_options['name']['fade']; ?>" value="no"<?php if($current['fade'] == 'no') { echo ' checked="checked"'; } ?> />
+	No</label>
+	</td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">Use Cookies</th>
+	<td><label for="<?php echo $linkedlist_options['name']['cookies']; ?>">
+	<input type="radio" name="<?php echo $linkedlist_options['name']['cookies']; ?>" value="yes"<?php if($current['cookies'] == 'yes') { echo ' checked="checked"'; } ?> />
+	Yes</label><br />
+	<label for="<?php echo $linkedlist_options['name']['cookies']; ?>">
+	<input type="radio" name="<?php echo $linkedlist_options['name']['cookies']; ?>" value="no"<?php if($current['cookies'] == 'no') { echo ' checked="checked"'; } ?> />
 	No</label>
 	</td>
 	</tr>
@@ -225,6 +241,7 @@ function linkedlist_init() {
 	// apply defaults if not found
 	if ($linkedlist_options['value']['entries'] == null) { $linkedlist_options['value']['entries'] = 0; }
 	$linkedlist_options['value']['fade'] = ($linkedlist_options['value']['fade'] == 'no') ? 'false' : 'true';
+	$linkedlist_options['value']['cookies'] = ($linkedlist_options['value']['cookies'] == 'no') ? 'false' : 'true';
 	
 	
 	if (function_exists('wp_register_sidebar_widget') && function_exists('wp_register_widget_control')) {
@@ -303,12 +320,13 @@ function linkedlist_addSource() {
 	<script type="text/javascript" charset="utf-8">
 		google.load("feeds", "1");
 		
-		var links = new LinkedList(\'linkedlist\', '.$linkedlist_options['value']['entries'].', '.$linkedlist_options['value']['fade'].');'."\n";
+		var links = new LinkedList(\'linkedlist\', '.$linkedlist_options['value']['entries'].', '.$linkedlist_options['value']['fade'].', '.$linkedlist_options['value']['cookies'].');'."\n";
 
 	foreach ($links as $link) {
 		if ($link->link_visible != 'Y') { continue; }
 		
 		$link->link_name = wptexturize($link->link_name);
+		$link->link_name = str_replace("'", "&#039;", $link->link_name);
 		
 		if ($link->link_rss != '') {
 			echo "\t\tlinks.add('$link->link_rss', '$link->link_name');\n";

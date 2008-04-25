@@ -1,6 +1,6 @@
 // =================================================================================================
 // 
-// 	LinkedList v1.1.3                                                                                                     
+// 	LinkedList v1.1.4                                                                                                     
 //  by Prateek Rungta
 //  http://prateekrungta.com
 //  
@@ -37,13 +37,14 @@ LinkedList
 	they will be displayed
 */
 
-function LinkedList (containerId, numEntries, fadeIn) {
+function LinkedList (containerId, numEntries, fadeIn, useCookies) {
 	this.containerId = containerId;
 	this.feeds = new Array();
 	this.loaded = false;
 	this.numLoaded = 0;
 	this.numEntries = numEntries;
 	this.fadeIn = (fadeIn != false) ? true : false;
+	this.useCookies = (useCookies == null || useCookies == false) ? false : true;
 	
 	//methods
 	this.add		= function(feedURL, name, isFeed) { // public method
@@ -327,6 +328,7 @@ function LinkedList (containerId, numEntries, fadeIn) {
 		http://www.quirksmode.org/js/cookies.html
 	*/
 	function createCookie (name, value, days) {
+		if (!this.useCookies) return;
 		if (days) {
 			var date = new Date();
 			date.setTime(date.getTime()+(days*24*60*60*1000));
@@ -337,6 +339,7 @@ function LinkedList (containerId, numEntries, fadeIn) {
 	}
 
 	function readCookie (name) {
+		if (!this.useCookies) return null;
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
 		for(var i=0;i < ca.length;i++) {
