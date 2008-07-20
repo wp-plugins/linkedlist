@@ -9,11 +9,11 @@ LinkedList sorts your blogroll in the order by which the sites on it were last u
 
 == Description ==
 
-LinkedList is a simple WordPress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated. LinkedList does this by using Google's excellent [AJAX Feed API]("http://code.google.com/apis/ajaxfeeds/") to discover (if needed) and read the RSS/Atom feeds of the sites on your blogroll.
+LinkedList is a simple WordPress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated. LinkedList does this by using Google's excellent [AJAX Feed API](http://code.google.com/apis/ajaxfeeds/) to discover (if needed) and read the RSS/Atom feeds of the sites on your blogroll.
 
 == Installation ==
 
-LinkedList uses Google's excellent [AJAX Feed API]("http://code.google.com/apis/ajaxfeeds/") to read the RSS/Atom feeds, meaning you'll need a valid Google AJAX Feed API Key for the website where you wish to display the links. [Sign up for one](http://code.google.com/apis/ajaxfeeds/signup.html "Sign up for the Google AJAX Feed API - Google AJAX Feed API - Google Code") if you haven't got it already (don't worry there aren't any forms to fill).
+LinkedList uses Google's excellent [AJAX Feed API](http://code.google.com/apis/ajaxfeeds/) to read the RSS/Atom feeds, meaning you'll need a valid Google AJAX Feed API Key for the website where you wish to display the links. [Sign up for one](http://code.google.com/apis/ajaxfeeds/signup.html "Sign up for the Google AJAX Feed API - Google AJAX Feed API - Google Code") if you haven't got it already (don't worry there aren't any forms to fill).
 
 Once you have a valid Google AJAX API key,
 
