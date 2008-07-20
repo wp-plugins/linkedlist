@@ -3,7 +3,7 @@
 Plugin Name: LinkedList
 Plugin URI: http://prateekrungta.com/linkedlist/wp-plugin
 Description: LinkedList.wp is a simple Wordpress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated.
-Version: 1.0.3
+Version: 1.1
 Author: Prateek Rungta
 Author URI: http://prateekrungta.com
 */
@@ -29,11 +29,13 @@ Author URI: http://prateekrungta.com
 $linkedlist_options = array();
 $linkedlist_options['name'] = array(
 			'key' 		=> 'google_ajax_feed_api_key', 	// the WP option under which the user's API key is stored
+			'links'		=> 'linkedlist_links',			// for numberOfLinks
 			'entries' 	=> 'linkedlist_entries', 		// for numberOfEntries
 			'fade' 		=> 'linkedlist_fade',			// for fadeEntries
 			'cookies'	=> 'linkedlist_cookies');		// for useCookies
 $linkedlist_options['value'] = array(
 			'key' 		=> '',							// Paste your Google API key here to hardcode it.
+			'links'		=> '',
 			'entries' 	=> '',
 			'fade' 		=> '',
 			'cookies'	=> '');
@@ -81,7 +83,7 @@ function linkedlist_menu_css() {
 			else { menu.parentNode.insertBefore(warning, nextSibling); }
 		}
 	</script>
-	<!-- End of custom JS for LinkedList Warning -->
+<!-- End of custom JS for LinkedList Warning -->
 <?php		
 	}
 	
@@ -111,25 +113,30 @@ function linkedlist_menu() {
 	$hiddenField = 'linkedlist_config_submit';
 	
 	$current = array(); // to get the currently stored values from the WP database
-	$current['key'] = get_option($linkedlist_options['name']['key']);
+	$current['key'] 	= get_option($linkedlist_options['name']['key']);
+	$current['links'] 	= get_option($linkedlist_options['name']['links']);
 	$current['entries'] = get_option($linkedlist_options['name']['entries']);
-	$current['fade'] = get_option($linkedlist_options['name']['fade']);
+	$current['fade'] 	= get_option($linkedlist_options['name']['fade']);
 	$current['cookies'] = get_option($linkedlist_options['name']['cookies']);
 
-	$current['entries'] = ($current['entries'] != null) ? $current['entries'] : 0;
-	$current['fade'] = ($current['fade'] != null) ? $current['fade'] : 'yes';
+	$current['links'] 	= ($current['links'] != null)	? $current['links'] : 0;
+	$current['entries'] = ($current['entries'] != null)	? $current['entries'] : 0;
+	$current['fade'] 	= ($current['fade'] != null)	? $current['fade'] : 'yes';
 	$current['cookies'] = ($current['cookies'] != null) ? $current['cookies'] : 'no';
 
 	if (isset($_POST[$hiddenField]) && $_POST[$hiddenField] == '1') {
-		$current['key'] = $_POST[$linkedlist_options['name']['key']];
+		$current['key'] 	= $_POST[$linkedlist_options['name']['key']];
+		if (is_numeric($_POST[$linkedlist_options['name']['links']]))
+		{$current['links'] 	= $_POST[$linkedlist_options['name']['links']];}
 		$current['entries'] = $_POST[$linkedlist_options['name']['entries']];
-		$current['fade'] = $_POST[$linkedlist_options['name']['fade']];
+		$current['fade'] 	= $_POST[$linkedlist_options['name']['fade']];
 		$current['cookies'] = $_POST[$linkedlist_options['name']['cookies']];
 		
-		update_option ($linkedlist_options['name']['key'], $current['key']); // creates an entry if it doesn't exist and updates it
-		update_option ($linkedlist_options['name']['entries'], $current['entries']);
-		update_option ($linkedlist_options['name']['fade'], $current['fade']);
-		update_option ($linkedlist_options['name']['cookies'], $current['cookies']);
+		update_option ($linkedlist_options['name']['key'], 		$current['key']); // creates an entry if it doesn't exist
+		update_option ($linkedlist_options['name']['links'], 	$current['links']);
+		update_option ($linkedlist_options['name']['entries'], 	$current['entries']);
+		update_option ($linkedlist_options['name']['fade'], 	$current['fade']);
+		update_option ($linkedlist_options['name']['cookies'], 	$current['cookies']);
 ?>		
 	<div id="linkedlist_config_status" class="updated fade">
 		<p>LinkedList preferences updated!</p>
@@ -151,7 +158,14 @@ function linkedlist_menu() {
 	</td>
 	</tr>
 	<tr valign="top">
-	<th scope="row">Number of Entries</th>
+	<th scope="row">Number of Links</th>
+	<td><input type="text" name="<?php echo $linkedlist_options['name']['links']; ?>" value="<?php echo $current['links']; ?>" size="3" />
+	<br />
+	0 = show all links.
+	</td>
+	</tr>
+	<tr valign="top">
+	<th scope="row">Number of Entries (for each link)</th>
 	<td><label for="<?php echo $linkedlist_options['name']['entries']; ?>">
 	<select name="<?php echo $linkedlist_options['name']['entries']; ?>">
 <?php
@@ -320,7 +334,11 @@ function linkedlist_addSource() {
 	<script type="text/javascript" charset="utf-8">
 		google.load("feeds", "1");
 		
-		var links = new LinkedList(\'linkedlist\', '.$linkedlist_options['value']['entries'].', '.$linkedlist_options['value']['fade'].', '.$linkedlist_options['value']['cookies'].');'."\n";
+		google.setOnLoadCallback(function() {
+			if (document.getElementById(\'linkedlist\')) {'."\n";
+
+	echo '	var links = new LinkedList(\'linkedlist\', '.$linkedlist_options['value']['entries'].', '.$linkedlist_options['value']['fade'].', '.$linkedlist_options['value']['cookies'].');'."\n";
+	echo '	links.limitTo('.$linkedlist_options['value']['links'].');'."\n";
 
 	foreach ($links as $link) {
 		if ($link->link_visible != 'Y') { continue; }
@@ -336,8 +354,6 @@ function linkedlist_addSource() {
 	}
 
 	echo '
-		google.setOnLoadCallback(function() {
-			if (document.getElementById(\'linkedlist\')) {
 				links.display();
 			}
 		});
