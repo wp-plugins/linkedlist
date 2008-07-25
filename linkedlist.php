@@ -3,7 +3,7 @@
 Plugin Name: LinkedList
 Plugin URI: http://prateekrungta.com/linkedlist/wp-plugin
 Description: LinkedList.wp is a simple Wordpress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated.
-Version: 1.1
+Version: 1.1.1
 Author: Prateek Rungta
 Author URI: http://prateekrungta.com
 */
@@ -328,17 +328,16 @@ function linkedlist_addSource() {
 	if ($linkedlist_options['value']['key'] == '' || $links == null) { return; } // aborting
 	
 	echo '
-	<!-- LinkedList plugin starts -->
-	<script type="text/javascript" src="http://www.google.com/jsapi?key='.$linkedlist_options['value']['key'].'"></script>
-	<script type="text/javascript" src="'; bloginfo('url'); echo '/wp-content/plugins/linkedlist/linkedlist.js" charset="utf-8"></script>
-	<script type="text/javascript" charset="utf-8">
-		google.load("feeds", "1");
-		
-		google.setOnLoadCallback(function() {
-			if (document.getElementById(\'linkedlist\')) {'."\n";
+<!-- LinkedList plugin starts -->
+<script type="text/javascript" src="http://www.google.com/jsapi?key='.$linkedlist_options['value']['key'].'"></script>
+<script type="text/javascript" src="'; bloginfo('wpurl'); echo '/wp-content/plugins/linkedlist/linkedlist.js" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+google.load("feeds", "1");
+google.setOnLoadCallback(function() {
+	if (!document.getElementById(\'linkedlist\')) return;'."\n";
 
-	echo '	var links = new LinkedList(\'linkedlist\', '.$linkedlist_options['value']['entries'].', '.$linkedlist_options['value']['fade'].', '.$linkedlist_options['value']['cookies'].');'."\n";
-	echo '	links.limitTo('.$linkedlist_options['value']['links'].');'."\n";
+	echo "\t".'var links = new LinkedList(\'linkedlist\', '.$linkedlist_options['value']['entries'].', '.$linkedlist_options['value']['fade'].', '.$linkedlist_options['value']['cookies'].');'."\n";
+	echo "\t".'links.limitTo('.$linkedlist_options['value']['links'].');'."\n";
 
 	foreach ($links as $link) {
 		if ($link->link_visible != 'Y') { continue; }
@@ -347,18 +346,16 @@ function linkedlist_addSource() {
 		$link->link_name = str_replace("'", "&#039;", $link->link_name);
 		
 		if ($link->link_rss != '') {
-			echo "\t\tlinks.add('$link->link_rss', '$link->link_name');\n";
+			echo "\tlinks.add('$link->link_rss', '$link->link_name');\n";
 		} else {
-			echo "\t\tlinks.add('$link->link_url', '$link->link_name', false);\n";
+			echo "\tlinks.add('$link->link_url', '$link->link_name', false);\n";
 		}
 	}
 
-	echo '
-				links.display();
-			}
-		});
-    </script>
-	<!-- LinkedList plugin ends -->'."\n";
+	echo '	links.display();
+});
+</script>
+<!-- LinkedList plugin ends -->'."\n";
 }
 
 $links = get_bookmarks();

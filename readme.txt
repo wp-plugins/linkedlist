@@ -20,7 +20,7 @@ Once you have a valid Google AJAX API key,
 1.	Upload the `linkedlist` folder to the `/wp-content/plugins/` directory.
 2.	Activate the plugin through the 'Plugins' menu in your WordPress admin.
 3.	Once activated, you will see a new submenu under plugins — LinkedList Config. Go to that page, fill in your Google API key and save it.
-4.	Make sure the ‘Links’ widget is on your sidebar (found under the Design menu for Wordpress 2.5, under the Presentation menu for earlier versions) and you’re all set.
+4.	Make sure the 'Links' widget is on your sidebar (found under the Design menu for Wordpress 2.5, under the Presentation menu for earlier versions) and you’re all set.
 
 LinkedList is clever enough to fetch the links from your Blogroll and auto–detect their feeds. You can, however, make its work a little easier by manually entering the feed URLs ( `Manage > Links > Edit Link > Advanced > RSS Address` ).
 
