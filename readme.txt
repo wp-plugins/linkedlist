@@ -30,6 +30,14 @@ LinkedList is clever enough to fetch the links from your Blogroll and auto–det
 
 In an ideal world, it should. If you do bump into a glitch with your theme then [drop me a note](http://prateekrungta.com/linkedlist/wp-plugin#feedback "LinkedList - Feedback") and I’ll try and fix the issue.
 
+= What about using LinkedList in themes without widget support? =
+
+All you need to do (besides activating the plugin) is include this code wherever you want the list to appear:
+
+	<div id="linkedlist"></div>
+
+LinkedList.wp is essentially a wrapper around [LinkedList.js](http://prateekrungta.com/linkedlist "LinkedList - JavaScript blogroll plugin"), so for a more custom implementation, checkout [LinkedList.js](http://prateekrungta.com/linkedlist "LinkedList - JavaScript blogroll plugin").
+
 = What is the answer to Life, the Universe, and Everything? =
 
 42
