@@ -2,7 +2,7 @@
 Contributors: rungta
 Tags: blogroll, sidebar, links
 Requires at least: 2.3
-Tested up to: 2.6
+Tested up to: 2.7.1
 Stable tag: trunk
 
 LinkedList sorts your blogroll in the order by which the sites on it were last updated.
