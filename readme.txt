@@ -5,11 +5,11 @@ Requires at least: 2.3
 Tested up to: 2.7.1
 Stable tag: trunk
 
-LinkedList sorts your blogroll in the order by which the sites on it were last updated.
+This plugin is no longer maintained. Sorry for the trouble and thanks for all the fish.
 
 == Description ==
 
-LinkedList is a simple WordPress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated. LinkedList does this by using Google's excellent [AJAX Feed API](http://code.google.com/apis/ajaxfeeds/) to discover (if needed) and read the RSS/Atom feeds of the sites on your blogroll.
+LinkedList <del>is</del> <ins>was</ins> a simple WordPress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated. LinkedList <del>does</del> <ins>did</ins> this by using Google's excellent [AJAX Feed API](http://code.google.com/apis/ajaxfeeds/) to discover (if needed) and read the RSS/Atom feeds of the sites on your blogroll.
 
 == Installation ==
 
