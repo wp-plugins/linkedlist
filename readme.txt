@@ -9,7 +9,7 @@ NOTE: This plugin is no longer maintained. Sorry for the trouble, and thanks for
 
 == Description ==
 
-LinkedList _was_ a simple WordPress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated. LinkedList <del>does</del> _did_ this by using Google's excellent [AJAX Feed API](http://code.google.com/apis/ajaxfeeds/) to discover (if needed) and read the RSS/Atom feeds of the sites on your blogroll.
+LinkedList _was_ a simple WordPress plugin for sorting your blogroll in the order by which the sites on the blogroll were last updated. LinkedList _did_ this by using Google's excellent [AJAX Feed API](http://code.google.com/apis/ajaxfeeds/) to discover (if needed) and read the RSS/Atom feeds of the sites on your blogroll.
 
 == Installation ==
 
